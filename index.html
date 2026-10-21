@@ -1,0 +1,907 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для самой особенной 🌻</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #fff0f5;
+            min-height: 100vh;
+            min-height: 100svh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .falling-bg {
+            position: fixed;
+            top: -50px;
+            font-size: 24px;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        .card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.96);
+            padding: 30px 22px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.4);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+            z-index: 10;
+            border: 2px solid #ffb6c1;
+            animation: appear 0.4s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        h1 {
+            color: #ff6b81;
+            margin-bottom: 20px;
+            font-size: 24px;
+            line-height: 1.4;
+        }
+
+        h2 {
+            color: #2f3542;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        p {
+            color: #57606f;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 17px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.3s;
+            display: inline-block;
+        }
+
+        .btn-yes {
+            background-color: #ff6b81;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.3);
+        }
+
+        .btn-yes:hover {
+            background-color: #ff4757;
+        }
+
+        .btn-no {
+            background-color: #a4b0be;
+            color: white;
+            position: absolute;
+            z-index: 15;
+            white-space: nowrap;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            height: 130px;
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .envelope-wrapper {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: transform 0.3s;
+            margin: 10px 0;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.08);
+        }
+
+        .envelope {
+            font-size: 95px;
+            line-height: 1;
+        }
+
+        .envelope-question {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            background: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flower-confetti {
+            position: fixed;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 99;
+            animation: burst 1.5s ease-out forwards;
+        }
+
+        @keyframes burst {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y))
+                    rotate(var(--r)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .catch-zone {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+            background: #fff5f7;
+            border-radius: 15px;
+            border: 1px dashed #ffb6c1;
+        }
+
+        .falling-flower {
+            position: absolute;
+            top: -40px;
+            font-size: 35px;
+            cursor: pointer;
+            user-select: none;
+            animation: drop 2.5s linear forwards;
+        }
+
+        @keyframes drop {
+            from { top: -40px; }
+            to { top: 200px; }
+        }
+
+        .puzzle-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .puzzle-piece {
+            background: #ffeaa7;
+            padding: 12px 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid #f1c40f;
+            font-weight: bold;
+            color: #d35400;
+        }
+
+        .cards-grid {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .fate-card {
+            width: 95px;
+            height: 135px;
+            background: #ffb6c1;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            cursor: pointer;
+            border: 3px solid #ff6b81;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .fate-card.flipped {
+            background: #fff;
+            border-color: #2ecc71;
+        }
+
+        .wheel-box {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 20px;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #ff6b81;
+            background: conic-gradient(
+                #ffeaee 0% 25%,
+                #ffb6c1 25% 50%,
+                #ffeaee 50% 75%,
+                #ffb6c1 75% 100%
+            );
+            transition: transform 3s cubic-bezier(0.1, 0.8, 0.1, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        #growing-heart {
+            font-size: 55px;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.1s ease;
+            user-select: none;
+        }
+
+        .fullscreen-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff0f5;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .final-message {
+            position: relative;
+            z-index: 10001;
+            font-size: 30px;
+            color: #ff6b81;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 380px) {
+            .card {
+                padding: 24px 14px;
+            }
+
+            h1 {
+                font-size: 21px;
+            }
+
+            .fate-card {
+                width: 80px;
+                height: 115px;
+            }
+
+            .btn {
+                padding: 11px 18px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ЭТАП 1: Конверт -->
+    <div id="stage-1" class="card">
+        <h1>
+            Если ты считаешь, что мы не зря в тот день пожали друг другу руки,
+            кликни по конвертику! 😊
+        </h1>
+
+        <div class="envelope-wrapper" onclick="triggerFlowerBurst()">
+            <div class="envelope">✉️</div>
+            <div class="envelope-question">❓</div>
+        </div>
+    </div>
+
+    <!-- ЭТАП 2: Ловля подсолнухов -->
+    <div id="stage-2" class="card hidden">
+        <h1 id="burst-title" style="color: #2ecc71;"></h1>
+
+        <p>
+            Хорошо, тогда продолжаем игру! Поймай 5 падающих подсолнухов,
+            чтобы открыть следующий этап:
+        </p>
+
+        <div style="font-size: 18px; font-weight: bold; color: #ff6b81; margin-bottom: 10px;">
+            Поймано: <span id="catch-count">0</span> / 5
+        </div>
+
+        <div class="catch-zone" id="catch-zone"></div>
+    </div>
+
+    <!-- ЭТАП 3: Пазл -->
+    <div id="stage-3" class="card hidden">
+        <h1>Этап 3: Собери пазл признания 🧩</h1>
+
+        <p>Разложи кусочки фразы в правильном порядке, нажимая на них:</p>
+
+        <div class="puzzle-container" id="puzzle-container">
+            <div class="puzzle-piece" data-order="2" onclick="clickPiece(this)">
+                самая замечательная девчонка,
+            </div>
+
+            <div class="puzzle-piece" data-order="1" onclick="clickPiece(this)">
+                Ты безумно
+            </div>
+
+            <div class="puzzle-piece" data-order="3" onclick="clickPiece(this)">
+                которую я встречал! ✨
+            </div>
+        </div>
+
+        <button id="btn-puzzle" class="btn btn-yes hidden"
+                onclick="nextStage(3, 4)">
+            Идём дальше ➡️
+        </button>
+    </div>
+
+    <!-- ЭТАП 4: Карты судьбы -->
+    <div id="stage-4" class="card hidden">
+        <h1>Этап 4: Интерактивные карты судьбы 🃏</h1>
+
+        <p>
+            Найди среди карт правильный комплимент, предназначенный именно тебе,
+            чтобы пройти дальше:
+        </p>
+
+        <div class="cards-grid">
+            <div class="fate-card"
+                 onclick="flipFateCard(this, false, 'Почти! Попробуй другую 😉')">❓</div>
+
+            <div class="fate-card"
+                 onclick="flipFateCard(this, true, 'Ты — моё самое чистое вдохновение и радость! 🌸')">❓</div>
+
+            <div class="fate-card"
+                 onclick="flipFateCard(this, false, 'Близко, но поищи ещё 😊')">❓</div>
+        </div>
+
+        <div id="card-status"
+             style="min-height: 40px; font-weight: bold; color: #ff4757; margin-bottom: 15px;">
+        </div>
+
+        <button id="btn-cards" class="btn btn-yes hidden"
+                onclick="nextStage(4, 5)">
+            Пройти дальше ➡️
+        </button>
+    </div>
+
+    <!-- ЭТАП 5: Колесо удачи -->
+    <div id="stage-5" class="card hidden">
+        <h1>Этап 5: Романтическое колесо удачи 🎡</h1>
+
+        <p>Крути колесо и выиграй свой гарантированный подарок!</p>
+
+        <div class="wheel-box">
+            <div class="wheel" id="wheel">🎁</div>
+        </div>
+
+        <button id="btn-spin" class="btn btn-yes" onclick="spinWheel()">
+            Испытать удачу
+        </button>
+
+        <div id="wheel-result"
+             style="margin-top: 15px; font-weight: bold; color: #2ecc71;">
+        </div>
+
+        <button id="btn-wheel-next" class="btn btn-yes hidden"
+                onclick="nextStage(5, 6)" style="margin-top: 15px;">
+            Забрать приз и идти дальше ➡️
+        </button>
+    </div>
+
+    <!-- ЭТАП 6: Первый вопрос -->
+    <div id="stage-6" class="card hidden">
+        <h1>Ты считаешь, что мы вместе, и счастлива ли ты? 🥰</h1>
+
+        <p style="font-size: 14px; color: #a4b0be;">
+            (Можешь попробовать нажать «Нет»)
+        </p>
+
+        <div class="btn-container" id="container-q1">
+            <button id="yes-q1" class="btn btn-yes"
+                    onclick="answerQuestion1()">
+                Да!
+            </button>
+
+            <button id="no-q1" class="btn btn-no" type="button">
+                Нет
+            </button>
+        </div>
+    </div>
+
+    <!-- ЭТАП 7: Приглашение на свидание -->
+    <div id="stage-7" class="card hidden">
+        <h1>Ты пойдёшь со мной на свидание? 🌻✨</h1>
+
+        <div class="btn-container" id="container-q2">
+            <button id="yes-q2" class="btn btn-yes"
+                    onclick="answerQuestion2()">
+                Да, конечно! 😍
+            </button>
+
+            <button id="no-q2" class="btn btn-no" type="button">
+                Нет
+            </button>
+        </div>
+    </div>
+
+    <!-- ЭТАП 8: Финальное сердечко -->
+    <div id="stage-8" class="card hidden">
+        <h1>Ты сделала меня самым счастливым! ❤️</h1>
+
+        <p>
+            Мне безумно приятно, что ты на всё согласилась!
+            Для меня это очень многое значит... 🥹❤️
+            <br><br>
+            Я искренне дорожу тобой, невероятно ценю и люблю то,
+            что ты есть в моей жизни.
+            <br><br>
+            А теперь нажимай на это сердечко много-много раз! 👇
+        </p>
+
+        <div id="growing-heart" onclick="growHeart()">❤️</div>
+
+        <p style="margin-top: 15px; margin-bottom: 0;">
+            Нажатий: <span id="heart-count">0</span> / 15
+        </p>
+    </div>
+
+    <script>
+        // Постоянный красивый фон
+        function initBackground() {
+            const elements = ['🌻', '❤️', '💕', '✨'];
+
+            setInterval(() => {
+                const el = document.createElement('div');
+
+                el.classList.add('falling-bg');
+                el.innerText = elements[
+                    Math.floor(Math.random() * elements.length)
+                ];
+
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration =
+                    (Math.random() * 3 + 3) + 's';
+                el.style.opacity = Math.random() * 0.4 + 0.4;
+
+                document.body.appendChild(el);
+
+                setTimeout(() => el.remove(), 6500);
+            }, 400);
+        }
+
+        initBackground();
+
+        // Переключение этапов
+        function nextStage(current, next) {
+            const currentStage =
+                document.getElementById(`stage-${current}`);
+
+            const nextStageElement =
+                document.getElementById(`stage-${next}`);
+
+            if (!currentStage || !nextStageElement) {
+                console.error('Этап не найден:', current, next);
+                return;
+            }
+
+            currentStage.classList.add('hidden');
+            nextStageElement.classList.remove('hidden');
+
+            if (next === 6) {
+                setupRunnerButton(
+                    'no-q1',
+                    'container-q1',
+                    'yes-q1'
+                );
+            }
+
+            if (next === 7) {
+                setupRunnerButton(
+                    'no-q2',
+                    'container-q2',
+                    'yes-q2'
+                );
+            }
+        }
+
+        // ЭТАП 1: Салют из цветов
+        let burstStarted = false;
+
+        function triggerFlowerBurst() {
+            if (burstStarted) return;
+            burstStarted = true;
+
+            const flowers = ['🌻', '🌸', '🌹', '💐', '❤️'];
+
+            document.body.style.background =
+                'linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%)';
+
+            for (let i = 0; i < 40; i++) {
+                const f = document.createElement('div');
+
+                f.classList.add('flower-confetti');
+                f.innerText = flowers[
+                    Math.floor(Math.random() * flowers.length)
+                ];
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 250 + 100;
+
+                f.style.setProperty(
+                    '--x',
+                    `${Math.cos(angle) * distance}px`
+                );
+
+                f.style.setProperty(
+                    '--y',
+                    `${Math.sin(angle) * distance}px`
+                );
+
+                f.style.setProperty(
+                    '--r',
+                    `${Math.random() * 360}deg`
+                );
+
+                f.style.left = '50%';
+                f.style.top = '50%';
+
+                document.body.appendChild(f);
+
+                setTimeout(() => f.remove(), 1600);
+            }
+
+            setTimeout(() => {
+                nextStage(1, 2);
+
+                document.getElementById('burst-title').innerText =
+                    'Я так и знал! 🎉';
+
+                startCatchGame();
+            }, 600);
+        }
+
+        // ЭТАП 2: Ловля подсолнухов
+        let caught = 0;
+        let catchInterval = null;
+        let catchGameFinished = false;
+
+        function startCatchGame() {
+            const zone = document.getElementById('catch-zone');
+
+            if (catchInterval) {
+                clearInterval(catchInterval);
+            }
+
+            catchInterval = setInterval(() => {
+                if (caught >= 5) {
+                    clearInterval(catchInterval);
+                    catchInterval = null;
+
+                    if (!catchGameFinished) {
+                        catchGameFinished = true;
+
+                        setTimeout(() => {
+                            nextStage(2, 3);
+                        }, 600);
+                    }
+
+                    return;
+                }
+
+                const flower = document.createElement('div');
+
+                flower.classList.add('falling-flower');
+                flower.innerText = '🌻';
+
+                const maxLeft = Math.max(0, zone.clientWidth - 40);
+
+                flower.style.left =
+                    Math.random() * maxLeft + 'px';
+
+                flower.onclick = () => {
+                    if (caught >= 5) return;
+
+                    caught++;
+
+                    document.getElementById('catch-count').innerText =
+                        caught;
+
+                    flower.remove();
+
+                    if (caught >= 5 && catchInterval) {
+                        clearInterval(catchInterval);
+                        catchInterval = null;
+
+                        if (!catchGameFinished) {
+                            catchGameFinished = true;
+
+                            setTimeout(() => {
+                                nextStage(2, 3);
+                            }, 600);
+                        }
+                    }
+                };
+
+                zone.appendChild(flower);
+
+                setTimeout(() => flower.remove(), 2600);
+            }, 800);
+        }
+
+        // ЭТАП 3: Пазл признания
+        let currentOrder = 1;
+
+        function clickPiece(el) {
+            if (el.dataset.completed === 'true') return;
+
+            const order = Number(el.dataset.order);
+
+            if (order === currentOrder) {
+                el.style.background = '#2ecc71';
+                el.style.color = 'white';
+                el.style.borderColor = '#27ae60';
+                el.style.cursor = 'default';
+
+                el.dataset.completed = 'true';
+                currentOrder++;
+
+                if (currentOrder > 3) {
+                    document.getElementById('btn-puzzle')
+                        .classList.remove('hidden');
+                }
+            } else {
+                alert(
+                    'Ой, этот кусочек должен идти в другом порядке! ' +
+                    'Попробуй сначала другой кусочек 😉'
+                );
+            }
+        }
+
+        // ЭТАП 4: Карты судьбы
+        function flipFateCard(card, isCorrect, msg) {
+            if (card.classList.contains('flipped')) return;
+
+            card.classList.add('flipped');
+            card.innerText = isCorrect ? '🌻' : '❌';
+
+            document.getElementById('card-status').innerText = msg;
+
+            if (isCorrect) {
+                document.getElementById('btn-cards')
+                    .classList.remove('hidden');
+            }
+        }
+
+        // ЭТАП 5: Колесо удачи
+        let wheelSpinning = false;
+
+        function spinWheel() {
+            if (wheelSpinning) return;
+
+            wheelSpinning = true;
+
+            const wheel = document.getElementById('wheel');
+            const spinButton = document.getElementById('btn-spin');
+
+            const prizes = [
+                'Безлимитные обнимашки 🧸',
+                'Поход в классное кафе 🍰',
+                'Твои любимые подсолнухи 🌻',
+                'Романтический ужин ✨'
+            ];
+
+            const prizeIndex = Math.floor(
+                Math.random() * prizes.length
+            );
+
+            const randomDegrees =
+                Math.floor(Math.random() * 360) + 1440;
+
+            wheel.style.transform =
+                `rotate(${randomDegrees}deg)`;
+
+            spinButton.disabled = true;
+
+            document.getElementById('wheel-result').innerText =
+                'Колесо вращается... 💗';
+
+            setTimeout(() => {
+                document.getElementById('wheel-result').innerText =
+                    `Твой выигрыш: ${prizes[prizeIndex]}! 🎉`;
+
+                document.getElementById('btn-wheel-next')
+                    .classList.remove('hidden');
+
+                wheelSpinning = false;
+            }, 3100);
+        }
+
+        // ЭТАПЫ 6 и 7: Убегающие кнопки
+        const initializedRunnerButtons = new Set();
+
+        let scaleQ1 = 1;
+        let scaleQ2 = 1;
+
+        function setupRunnerButton(noBtnId, containerId, yesBtnId) {
+            if (initializedRunnerButtons.has(noBtnId)) return;
+
+            const noBtn = document.getElementById(noBtnId);
+            const container = document.getElementById(containerId);
+            const yesBtn = document.getElementById(yesBtnId);
+
+            if (!noBtn || !container || !yesBtn) return;
+
+            initializedRunnerButtons.add(noBtnId);
+
+            function move() {
+                const maxX = Math.max(
+                    0,
+                    container.clientWidth - noBtn.offsetWidth
+                );
+
+                const maxY = Math.max(
+                    0,
+                    container.clientHeight - noBtn.offsetHeight
+                );
+
+                noBtn.style.left =
+                    Math.floor(Math.random() * (maxX + 1)) + 'px';
+
+                noBtn.style.top =
+                    Math.floor(Math.random() * (maxY + 1)) + 'px';
+
+                if (noBtnId === 'no-q1') {
+                    scaleQ1 = Math.min(scaleQ1 + 0.15, 2.5);
+                    yesBtn.style.transform = `scale(${scaleQ1})`;
+                } else {
+                    scaleQ2 = Math.min(scaleQ2 + 0.15, 2.5);
+                    yesBtn.style.transform = `scale(${scaleQ2})`;
+                }
+            }
+
+            noBtn.addEventListener('mouseenter', move);
+
+            noBtn.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                move();
+            }, { passive: false });
+
+            noBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                move();
+            });
+        }
+
+        function answerQuestion1() {
+            nextStage(6, 7);
+        }
+
+        function answerQuestion2() {
+            nextStage(7, 8);
+        }
+
+        // ЭТАП 8: Растущее сердце и финальный салют
+        let clicks = 0;
+        let heartScale = 1;
+        let finalCelebrationStarted = false;
+
+        function growHeart() {
+            if (finalCelebrationStarted) return;
+
+            clicks++;
+            heartScale += 0.3;
+
+            const heart = document.getElementById('growing-heart');
+
+            heart.style.transform = `scale(${heartScale})`;
+
+            document.getElementById('heart-count').innerText =
+                Math.min(clicks, 15);
+
+            if (clicks >= 15) {
+                finalCelebrationStarted = true;
+                launchFinalCelebration();
+            }
+        }
+
+        function launchFinalCelebration() {
+            const overlay = document.createElement('div');
+
+            overlay.classList.add('fullscreen-overlay');
+
+            const message = document.createElement('h1');
+
+            message.classList.add('final-message');
+            message.innerText =
+                'Вся моя вселенная теперь наполнена тобой! 🌻❤️';
+
+            overlay.appendChild(message);
+            document.body.appendChild(overlay);
+
+            for (let i = 0; i < 150; i++) {
+                setTimeout(() => {
+                    const sun = document.createElement('div');
+
+                    sun.style.position = 'absolute';
+                    sun.style.fontSize =
+                        Math.random() * 30 + 20 + 'px';
+
+                    sun.innerText =
+                        Math.random() > 0.3 ? '🌻' : '❤️';
+
+                    sun.style.left = Math.random() * 100 + '%';
+                    sun.style.top = '-60px';
+                    sun.style.zIndex = '10000';
+                    sun.style.pointerEvents = 'none';
+                    sun.style.transition =
+                        'transform 4s linear, opacity 4s';
+
+                    overlay.appendChild(sun);
+
+                    requestAnimationFrame(() => {
+                        sun.style.transform =
+                            `translate(${Math.random() * 100 - 50}px, 110vh) ` +
+                            `rotate(${Math.random() * 720}deg)`;
+
+                        sun.style.opacity = '0';
+                    });
+
+                    setTimeout(() => sun.remove(), 4200);
+                }, i * 20);
+            }
+        }
+    </script>
+</body>
+</html>
